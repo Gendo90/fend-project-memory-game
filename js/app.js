@@ -3,6 +3,70 @@
  */
 
 
+ function createDeck() {
+     // Initialize the deck
+     cardList = new Array();
+
+     // Create and add all <li> "cards" to the deck, 16 in total
+     for (let i=0; i<16; i++) {
+         let newCard = document.createElement("li");
+         newCard.classList.add("card");
+         cardList.push(newCard);
+     }
+
+     // Create and add <i> elements with icons to the cards
+     // For loop runs twice because the cards are doubled up
+     let shifter = null;
+     let icon = null;
+
+     for (let i=0; i<2; i++) {
+         shifter = i*8;
+
+         // Add diamond card icon
+         icon = document.createElement("i");
+         icon.classList.add("fas", "fas-diamond");
+         cardList[0+shifter].appendChild(icon);
+
+         // Add plane card icon
+         icon = document.createElement("i");
+         icon.classList.add("fas", "fas-paper-plane-o");
+         cardList[1+shifter].appendChild(icon);
+
+         // Add anchor card icon
+         icon = document.createElement("i");
+         icon.classList.add("fas", "fas-anchor");
+         cardList[2+shifter].appendChild(icon);
+
+         // Add bolt card icon
+         icon = document.createElement("i");
+         icon.classList.add("fas", "fas-bolt");
+         cardList[3+shifter].appendChild(icon);
+
+         // Add cube card icon
+         icon = document.createElement("i");
+         icon.classList.add("fas", "fas-cube");
+         cardList[4+shifter].appendChild(icon);
+
+         // Add leaf card icon
+         icon = document.createElement("i");
+         icon.classList.add("fas", "fas-leaf");
+         cardList[5+shifter].appendChild(icon);
+
+         // Add bicycle card icon
+         icon = document.createElement("i");
+         icon.classList.add("fas", "fas-bicycle");
+         cardList[6+shifter].appendChild(icon);
+
+         // Add bomb card icon
+         icon = document.createElement("i");
+         icon.classList.add("fas", "fas-bomb");
+         cardList[7+shifter].appendChild(icon);
+     }
+
+     return cardList
+ }
+
+
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -25,9 +89,23 @@ function shuffle(array) {
     return array;
 }
 
+// Make the deck to be used
+let actualDeck = createDeck();
+
+// Shuffle the deck
+actualDeck = shuffle(actualDeck);
+
+// Place all cards onto the page, into the right <ul> element
+let webpageDeck = document.getElementById("deck");
+for (let i = 0; i<actualDeck.length; i++) {
+    webpageDeck.appendChild(actualDeck[i]);
+}
+
 
 /*
  * set up the event listener for a card. If a card is clicked:
+ * (use the ul.deck as the event listener, give the card object to it using
+ * the "event" parameter of its listener function)
  *  - display the card's symbol (put this functionality in another function that you call from this one)
  *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
  *  - if the list already has another card, check to see if the two cards match
