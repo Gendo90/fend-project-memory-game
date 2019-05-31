@@ -106,7 +106,7 @@ for (let i = 0; i<actualDeck.length; i++) {
 //  (use the ul.deck as the event listener, give the card object to it using
 //  the "event" parameter of its listener function)
 
-function getClickedCard() {
+function getClickedCards() {
     document.getElementById("deck").addEventListener("click", showCard);
 }
 
@@ -118,10 +118,29 @@ function showCard(event) {
     thisCard.classList.add("show", "open");
 }
 
-getClickedCard()
+// run the function below when app is ready!
+//getClickedCards()
 
- /*  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
+ //  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
+allOpenCards = new Array()
+function checkCards(card) {
+    allOpenCards.push(card);
+    if(allOpenCards.length>1) {
+        if(allOpenCards[0]===allOpenCards[1]) {
+            // run function to lock cards open, matched correctly!
+        }
+        else {
+            // run function to remove cards from "allOpenCards" and
+            // function to hide them again (place in above function)
+        }
+    }
+    // run function to increment move counter
+
+    // run function to check if game is over and if so, display
+    // game end message using another function
+}
+
+ /*  - if the list already has another card, check to see if the two cards match
  *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
  *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
