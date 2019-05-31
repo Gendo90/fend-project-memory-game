@@ -102,12 +102,25 @@ for (let i = 0; i<actualDeck.length; i++) {
 }
 
 
-/*
- * set up the event listener for a card. If a card is clicked:
- * (use the ul.deck as the event listener, give the card object to it using
- * the "event" parameter of its listener function)
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
+//  set up the event listener for a card. If a card is clicked:
+//  (use the ul.deck as the event listener, give the card object to it using
+//  the "event" parameter of its listener function)
+
+function getClickedCard() {
+    document.getElementById("deck").addEventListener("click", showCard);
+}
+
+
+ //  - display the card's symbol (put this functionality in another function that you call from this one)
+
+function showCard(event) {
+    thisCard = event.target
+    thisCard.classList.add("show", "open");
+}
+
+getClickedCard()
+
+ /*  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
  *  - if the list already has another card, check to see if the two cards match
  *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
  *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
