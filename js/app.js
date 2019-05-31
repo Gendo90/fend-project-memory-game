@@ -24,42 +24,42 @@
 
          // Add diamond card icon
          icon = document.createElement("i");
-         icon.classList.add("fas", "fas-diamond");
+         icon.classList.add("fa", "fa-diamond");
          cardList[0+shifter].appendChild(icon);
 
          // Add plane card icon
          icon = document.createElement("i");
-         icon.classList.add("fas", "fas-paper-plane-o");
+         icon.classList.add("fa", "fa-paper-plane-o");
          cardList[1+shifter].appendChild(icon);
 
          // Add anchor card icon
          icon = document.createElement("i");
-         icon.classList.add("fas", "fas-anchor");
+         icon.classList.add("fa", "fa-anchor");
          cardList[2+shifter].appendChild(icon);
 
          // Add bolt card icon
          icon = document.createElement("i");
-         icon.classList.add("fas", "fas-bolt");
+         icon.classList.add("fa", "fa-bolt");
          cardList[3+shifter].appendChild(icon);
 
          // Add cube card icon
          icon = document.createElement("i");
-         icon.classList.add("fas", "fas-cube");
+         icon.classList.add("fa", "fa-cube");
          cardList[4+shifter].appendChild(icon);
 
          // Add leaf card icon
          icon = document.createElement("i");
-         icon.classList.add("fas", "fas-leaf");
+         icon.classList.add("fa", "fa-leaf");
          cardList[5+shifter].appendChild(icon);
 
          // Add bicycle card icon
          icon = document.createElement("i");
-         icon.classList.add("fas", "fas-bicycle");
+         icon.classList.add("fa", "fa-bicycle");
          cardList[6+shifter].appendChild(icon);
 
          // Add bomb card icon
          icon = document.createElement("i");
-         icon.classList.add("fas", "fas-bomb");
+         icon.classList.add("fa", "fa-bomb");
          cardList[7+shifter].appendChild(icon);
      }
 
