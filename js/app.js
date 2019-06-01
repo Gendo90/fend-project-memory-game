@@ -116,22 +116,29 @@ function getClickedCards() {
 function showCard(event) {
     thisCard = event.target
     thisCard.classList.add("show", "open");
+    checkCards(thisCard);
 }
-
-// run the function below when app is ready!
-//getClickedCards()
 
  //  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
 allOpenCards = new Array()
 function checkCards(card) {
-    allOpenCards.push(card);
+    // Prevents the case where a card matches with itself!
+    if(card!==allOpenCards[0]) {
+        allOpenCards.push(card);
+    }
+
     if(allOpenCards.length>1) {
-        if(allOpenCards[0]===allOpenCards[1]) {
+        console.log(allOpenCards[0].firstElementChild.classList.value)
+        console.log(allOpenCards[1].firstElementChild.classList.value)
+        if(allOpenCards[0].firstElementChild.classList.value === allOpenCards[1].firstElementChild.classList.value) {
+            console.log(allOpenCards)
             // run function to lock cards open, matched correctly!
+            allOpenCards = setMatchedCards(allOpenCards);
         }
         else {
             // run function to remove cards from "allOpenCards" and
             // function to hide them again (place in above function)
+            allOpenCards = revertMismatch(allOpenCards);
         }
     }
     // run function to increment move counter
@@ -140,9 +147,25 @@ function checkCards(card) {
     // game end message using another function
 }
 
+function setMatchedCards(matchedCards) {
+    matchedCards.pop().classList.add("match");
+    matchedCards.pop().classList.add("match");
+    return matchedCards;
+}
+
+function revertMismatch(unmatchedCards) {
+    unmatchedCards.pop().classList.remove("show", "open");
+    unmatchedCards.pop().classList.remove("show", "open");
+    return unmatchedCards;
+}
+
  /*  - if the list already has another card, check to see if the two cards match
  *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
  *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+
+
+ // run the function below when app is ready!
+ getClickedCards()
