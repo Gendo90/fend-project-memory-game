@@ -128,10 +128,11 @@ function checkCards(card) {
     }
 
     if(allOpenCards.length>1) {
-        console.log(allOpenCards[0].firstElementChild.classList.value)
-        console.log(allOpenCards[1].firstElementChild.classList.value)
+        //console.log(allOpenCards[0].firstElementChild.classList.value)
+        //console.log(allOpenCards[1].firstElementChild.classList.value)
         if(allOpenCards[0].firstElementChild.classList.value === allOpenCards[1].firstElementChild.classList.value) {
-            console.log(allOpenCards)
+            //console.log(allOpenCards)
+
             // run function to lock cards open, matched correctly!
             allOpenCards = setMatchedCards(allOpenCards);
         }
@@ -154,8 +155,12 @@ function setMatchedCards(matchedCards) {
 }
 
 function revertMismatch(unmatchedCards) {
-    unmatchedCards.pop().classList.remove("show", "open");
-    unmatchedCards.pop().classList.remove("show", "open");
+    // Add a delay to see both cards before flipping them back around
+    setTimeout(function() {
+        unmatchedCards.pop().classList.remove("show", "open");
+        unmatchedCards.pop().classList.remove("show", "open");
+    }, 400);
+
     return unmatchedCards;
 }
 
