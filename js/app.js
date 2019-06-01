@@ -114,9 +114,11 @@ function getClickedCards() {
  //  - display the card's symbol (put this functionality in another function that you call from this one)
 
 function showCard(event) {
-    thisCard = event.target
-    thisCard.classList.add("show", "open");
-    checkCards(thisCard);
+    if(event.target.classList.contains("card")) {
+        thisCard = event.target
+        thisCard.classList.add("show", "open");
+        checkCards(thisCard);
+    }
 }
 
  //  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
