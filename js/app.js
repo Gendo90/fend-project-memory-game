@@ -109,10 +109,15 @@ function showCard(event) {
 
  //  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
 allOpenCards = new Array()
+let timerInterval = null;
 function checkCards(card) {
     // Prevents the case where a card matches with itself!
     if(card!==allOpenCards[0]) {
         allOpenCards.push(card);
+    }
+
+    if(allOpenCards.length===1 && getMoveCount()==0) {
+        timerInterval = startTimer();
     }
 
     if(allOpenCards.length>1) {
@@ -167,10 +172,16 @@ function revertMismatch(unmatchedCards) {
     return unmatchedCards;
 }
 
-function incrementMoves() {
+function getMoveCount() {
     let moveCounter = document.querySelector(".moves");
     let currentMoveCount = Number(moveCounter.textContent);
+    return currentMoveCount;
+}
+
+function incrementMoves() {
+    let currentMoveCount = getMoveCount();
     currentMoveCount++;
+    let moveCounter = document.querySelector(".moves");
     moveCounter.textContent = ""+(currentMoveCount);
     return currentMoveCount;
 }
@@ -197,6 +208,51 @@ function resetStars() {
             starList[i].classList.remove("defunct");
         }
     }
+}
+
+function startTimer() {
+    let thisInterval = setInterval(incrementTimer, 1000);
+    return thisInterval;
+}
+
+function getTimerValue() {
+    let minutes = document.querySelector("#minutes").textContent;
+    let seconds = document.querySelector("#seconds").textContent;
+    return [Number(minutes), Number(seconds)]
+}
+
+function incrementTimer() {
+    [minutes, seconds] = getTimerValue();
+    if(seconds<9) {
+        seconds++;
+        document.querySelector("#seconds").textContent = "0"+seconds;
+    }
+    else if(seconds<59) {
+        seconds++;
+        document.querySelector("#seconds").textContent = seconds;
+    }
+    else if(minutes<9) {
+        seconds = "00";
+        minutes++;
+        document.querySelector("#seconds").textContent = seconds;
+        document.querySelector("#minutes").textContent = "0" + minutes;
+    }
+    else if(minutes<59) {
+        seconds = "00";
+        minutes++;
+        document.querySelector("#seconds").textContent = seconds;
+        document.querySelector("#minutes").textContent = minutes;
+    }
+    else {
+        // reset the game if it takes an hour!
+        setupReset()
+    }
+}
+
+function resetTimer() {
+    clearInterval(timerInterval);
+    document.querySelector("#seconds").textContent = "00";
+    document.querySelector("#minutes").textContent = "00";
 }
 
  /*  - if the list already has another card, check to see if the two cards match
@@ -232,6 +288,7 @@ function setupReset() {
         }
         resetMoveCounter()
         resetStars()
+        resetTimer()
         runGame()
     });
 }
