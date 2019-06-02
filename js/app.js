@@ -129,8 +129,10 @@ function checkCards(card) {
             // function to hide them again (place in above function)
             allOpenCards = revertMismatch(allOpenCards);
         }
+
+        // run function to increment move counter
+        incrementMoves()
     }
-    // run function to increment move counter
 
     // run function to check if game is over and if so, display
     // game end message using another function
@@ -150,6 +152,17 @@ function revertMismatch(unmatchedCards) {
     }, 400);
 
     return unmatchedCards;
+}
+
+function incrementMoves() {
+    let moveCounter = document.querySelector(".moves");
+    let currentMoveCount = Number(moveCounter.textContent);
+    moveCounter.textContent = ""+(currentMoveCount+1);
+}
+
+function resetMoveCounter() {
+    let moveCounter = document.querySelector(".moves");
+    moveCounter.textContent = "0"
 }
 
  /*  - if the list already has another card, check to see if the two cards match
@@ -183,6 +196,7 @@ function setupReset() {
         while(deckContainer.firstChild) {
             deckContainer.removeChild(deckContainer.firstChild);
         }
+        resetMoveCounter()
         runGame()
     });
 }
