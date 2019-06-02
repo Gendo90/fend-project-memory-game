@@ -131,7 +131,20 @@ function checkCards(card) {
         }
 
         // run function to increment move counter
-        incrementMoves()
+        let moveCount = incrementMoves()
+
+        // remove star if the moves indicate that the
+        // player should have a lower rating
+        if(moveCount==21) {
+            removeStar();
+        }
+        else if(moveCount==26) {
+            removeStar()
+        }
+        else if(moveCount==31) {
+            removeStar()
+        }
+
     }
 
     // run function to check if game is over and if so, display
@@ -157,12 +170,33 @@ function revertMismatch(unmatchedCards) {
 function incrementMoves() {
     let moveCounter = document.querySelector(".moves");
     let currentMoveCount = Number(moveCounter.textContent);
-    moveCounter.textContent = ""+(currentMoveCount+1);
+    currentMoveCount++;
+    moveCounter.textContent = ""+(currentMoveCount);
+    return currentMoveCount;
 }
 
 function resetMoveCounter() {
     let moveCounter = document.querySelector(".moves");
     moveCounter.textContent = "0"
+}
+
+function removeStar() {
+    let starList = document.querySelectorAll(".fa-star");
+    for (let i=starList.length-1; i>=0; i--) {
+        if(!starList[i].classList.contains("defunct")) {
+            starList[i].classList.add("defunct");
+            break;
+        }
+    }
+}
+
+function resetStars() {
+    let starList = document.querySelectorAll(".fa-star");
+    for (let i=starList.length-1; i>=0; i--) {
+        if(starList[i].classList.contains("defunct")) {
+            starList[i].classList.remove("defunct");
+        }
+    }
 }
 
  /*  - if the list already has another card, check to see if the two cards match
@@ -197,6 +231,7 @@ function setupReset() {
             deckContainer.removeChild(deckContainer.firstChild);
         }
         resetMoveCounter()
+        resetStars()
         runGame()
     });
 }
