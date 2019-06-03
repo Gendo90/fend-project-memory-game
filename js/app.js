@@ -166,11 +166,14 @@ function setMatchedCards(matchedCards) {
 }
 
 function revertMismatch(unmatchedCards) {
+    // set card backgrounds to red to visually indicate they are not matches
+    unmatchedCards[0].classList.add("mismatch")
+    unmatchedCards[1].classList.add("mismatch")
     // Add a delay to see both cards before flipping them back around
     setTimeout(function() {
-        unmatchedCards.pop().classList.remove("show", "open");
-        unmatchedCards.pop().classList.remove("show", "open");
-    }, 400);
+        unmatchedCards.pop().classList.remove("show", "open", "mismatch");
+        unmatchedCards.pop().classList.remove("show", "open", "mismatch");
+    }, 500);
 
     return unmatchedCards;
 }
