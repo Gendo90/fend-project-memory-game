@@ -124,7 +124,6 @@ function checkCards(card) {
         //console.log(allOpenCards[0].firstElementChild.classList.value)
         //console.log(allOpenCards[1].firstElementChild.classList.value)
         if(allOpenCards[0].firstElementChild.classList.value === allOpenCards[1].firstElementChild.classList.value) {
-            //console.log(allOpenCards)
 
             // run function to lock cards open, matched correctly!
             allOpenCards = setMatchedCards(allOpenCards);
@@ -318,10 +317,11 @@ function gameOverMessage() {
 function gameOver() {
     stopTimer();
     swal.fire({
-        type:'success',
-        title:'Congratulations!',
-        html:gameOverMessage(),
-        confirmButtonText: 'Awesome'
+        type: 'success',
+        title: 'Congratulations!',
+        html: gameOverMessage(),
+        confirmButtonText: 'Awesome',
+        allowOutsideClick: false
     }).then(
             resetGame
   )
@@ -364,6 +364,36 @@ function setupReset() {
     });
 }
 
-setupReset()
 
-runGame()
+function gameInfo() {
+    const gameInfoHTML = `Hello! The object of this game
+                          is to match each pair of cards.
+                          You can click a card to view it, and then
+                          click another card to view it as well, and
+                          the cards will remain visible if they are a
+                          match. The cards will quickly become hidden again
+                          if they are not a match. The game is over when
+                          all cards have been matched. Have fun!`
+    return gameInfoHTML;
+}
+
+// run an alert window explaining the game when the window loads
+function explainGame() {
+    swal.fire({
+        type: 'info',
+        title: 'Matching Game',
+        html: gameInfo(),
+        confirmButtonText: 'Sounds good!',
+        allowOutsideClick: false
+    })
+}
+
+// function to explain and start the initial game
+function setupGame() {
+    explainGame()
+    setupReset()
+    runGame()
+}
+
+// explain and start the initial game when content is loaded
+window.addEventListener('DOMContentLoaded', setupGame());
