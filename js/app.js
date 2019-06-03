@@ -150,6 +150,10 @@ function checkCards(card) {
             removeStar()
         }
 
+        if(isGameOver()) {
+            gameOver()
+        }
+
     }
 
     // run function to check if game is over and if so, display
@@ -201,6 +205,17 @@ function removeStar() {
     }
 }
 
+function getStars() {
+    let starList = document.querySelectorAll(".fa-star");
+    let starCount = 0;
+    for (let i=starList.length-1; i>=0; i--) {
+        if(!starList[i].classList.contains("defunct")) {
+            starCount++;
+        }
+    }
+    return starCount;
+}
+
 function resetStars() {
     let starList = document.querySelectorAll(".fa-star");
     for (let i=starList.length-1; i>=0; i--) {
@@ -249,17 +264,69 @@ function incrementTimer() {
     }
 }
 
-function resetTimer() {
+function stopTimer() {
     clearInterval(timerInterval);
+}
+
+function resetTimer() {
+    stopTimer();
     document.querySelector("#seconds").textContent = "00";
     document.querySelector("#minutes").textContent = "00";
 }
 
- /*  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
+function isGameOver() {
+    let matchedCards = document.querySelectorAll('.card.match');
+    if(matchedCards.length===16) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+function gameOverMessage() {
+    const firstLine = 'You have won the game!<br>';
+    let secondLine = '';
+    let thirdLine = '';
+    let endTime = getTimerValue();
+    let starRating = getStars();
+    let starHTML = '<i class="fa fa-star"></i>';
+    let starText = '';
+
+    if(endTime[0]) {
+        secondLine = 'Your time was ' + endTime[0] +
+                            ' minutes and ' + endTime[1] +
+                            ' seconds!<br>'
+    }
+    else {
+        secondLine = 'Your time was ' + endTime[1] +
+                            ' seconds!<br>'
+    }
+
+    for(i=0; i<getStars(); i++) {
+        starText+=starHTML;
+    }
+    if(starText) {
+        thirdLine = 'Your star rating was ' + starText;
+    }
+    else {
+        thirdLine = 'Sorry, you got no stars. Keep trying!'
+    }
+    return firstLine+secondLine+thirdLine;
+}
+
+function gameOver() {
+    stopTimer();
+    swal.fire({
+        type:'success',
+        title:'Congratulations!',
+        html:gameOverMessage(),
+        confirmButtonText: 'Awesome'
+    }).then(
+            resetGame
+  )
+}
+ /*    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
 // Overall function to run the game!
@@ -280,16 +347,20 @@ function runGame() {
      getClickedCards()
 }
 
+function resetGame() {
+    let deckContainer = document.getElementById("deck");
+    while(deckContainer.firstChild) {
+        deckContainer.removeChild(deckContainer.firstChild);
+    }
+    resetMoveCounter();
+    resetStars();
+    resetTimer();
+    runGame();
+}
+
 function setupReset() {
     document.getElementById("restart").addEventListener("click", function() {
-        let deckContainer = document.getElementById("deck");
-        while(deckContainer.firstChild) {
-            deckContainer.removeChild(deckContainer.firstChild);
-        }
-        resetMoveCounter()
-        resetStars()
-        resetTimer()
-        runGame()
+        resetGame();
     });
 }
 
