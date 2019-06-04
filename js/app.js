@@ -65,14 +65,8 @@ function createDeck() {
  }
 
 
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
-
 // Shuffle function from http://stackoverflow.com/a/2450976
+// Used to change the order of the cards for each new game
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
 
@@ -91,14 +85,12 @@ function shuffle(array) {
 //  set up the event listener for a card. If a card is clicked:
 //  (use the ul.deck as the event listener, give the card object to it using
 //  the "event" parameter of its listener function)
-
 function getClickedCards() {
     document.getElementById("deck").addEventListener("click", showCard);
 }
 
 
- //  - display the card's symbol (put this functionality in another function that you call from this one)
-
+ // display the card's symbol
 function showCard(event) {
     if(event.target.classList.contains("card")) {
         thisCard = event.target
@@ -107,8 +99,10 @@ function showCard(event) {
     }
 }
 
- //  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
-allOpenCards = new Array()
+ // global variable to store which cards are currently opened to be matched
+ // and visible
+allOpenCards = [];
+// global variable used to reset the timer after a game ends or is restarted
 let timerInterval = null;
 function checkCards(card) {
     // Prevents the case where a card matches with itself!
@@ -121,8 +115,6 @@ function checkCards(card) {
     }
 
     if(allOpenCards.length>1) {
-        //console.log(allOpenCards[0].firstElementChild.classList.value)
-        //console.log(allOpenCards[1].firstElementChild.classList.value)
         if(allOpenCards[0].firstElementChild.classList.value === allOpenCards[1].firstElementChild.classList.value) {
 
             // run function to lock cards open, matched correctly!
@@ -149,22 +141,24 @@ function checkCards(card) {
             removeStar()
         }
 
+        // run function to check if game is over and if so, display
+        // game end message using another function
         if(isGameOver()) {
             gameOver()
         }
 
     }
-
-    // run function to check if game is over and if so, display
-    // game end message using another function
 }
 
+// Locks matched cards as visible after they have been matched correctly
 function setMatchedCards(matchedCards) {
     matchedCards.pop().classList.add("match");
     matchedCards.pop().classList.add("match");
     return matchedCards;
 }
 
+// Signals to the player that the cards are mismatched, and flips them over to
+// hidden again
 function revertMismatch(unmatchedCards) {
     // set card backgrounds to red to visually indicate they are not matches
     unmatchedCards[0].classList.add("mismatch")
@@ -178,12 +172,14 @@ function revertMismatch(unmatchedCards) {
     return unmatchedCards;
 }
 
+// Returns the total number of moves at this point in the game
 function getMoveCount() {
     let moveCounter = document.querySelector(".moves");
     let currentMoveCount = Number(moveCounter.textContent);
     return currentMoveCount;
 }
 
+// Increases the move counter by one (1)
 function incrementMoves() {
     let currentMoveCount = getMoveCount();
     currentMoveCount++;
@@ -192,11 +188,13 @@ function incrementMoves() {
     return currentMoveCount;
 }
 
+// Resets the move counter to 0
 function resetMoveCounter() {
     let moveCounter = document.querySelector(".moves");
     moveCounter.textContent = "0"
 }
 
+// Removes one star from the player's rating
 function removeStar() {
     let starList = document.querySelectorAll(".fa-star");
     for (let i=starList.length-1; i>=0; i--) {
@@ -207,6 +205,7 @@ function removeStar() {
     }
 }
 
+// Returns how many stars are currently visible
 function getStars() {
     let starList = document.querySelectorAll(".fa-star");
     let starCount = 0;
@@ -218,6 +217,7 @@ function getStars() {
     return starCount;
 }
 
+// Resets the stars to the full 3-star value
 function resetStars() {
     let starList = document.querySelectorAll(".fa-star");
     for (let i=starList.length-1; i>=0; i--) {
@@ -227,17 +227,22 @@ function resetStars() {
     }
 }
 
+// Starts the timer and causes it to increment every second
 function startTimer() {
     let thisInterval = setInterval(incrementTimer, 1000);
     return thisInterval;
 }
 
+// Returns the current timer value as an array of [minutes, seconds]
 function getTimerValue() {
     let minutes = document.querySelector("#minutes").textContent;
     let seconds = document.querySelector("#seconds").textContent;
     return [Number(minutes), Number(seconds)]
 }
 
+// Increases the timer by one second at a time, with special cases for
+// adding seconds if there are less than 10 seconds or if another minute
+// must be added
 function incrementTimer() {
     [minutes, seconds] = getTimerValue();
     if(seconds<9) {
@@ -266,16 +271,20 @@ function incrementTimer() {
     }
 }
 
+// Stops the timer running on the current game (used when the game is over)
 function stopTimer() {
     clearInterval(timerInterval);
 }
 
+// Resets the timer to 00:00 when a new game is started
 function resetTimer() {
     stopTimer();
     document.querySelector("#seconds").textContent = "00";
     document.querySelector("#minutes").textContent = "00";
 }
 
+// Function that checks if all cards have been matched to signal that the
+// current game has ended
 function isGameOver() {
     let matchedCards = document.querySelectorAll('.card.match');
     if(matchedCards.length===16) {
@@ -286,6 +295,9 @@ function isGameOver() {
     }
 }
 
+// Message that is supplied to the gameOver() function to show to the player
+// after the game ends. Separated from the gameOver() function to make both
+// functions easier to understand and edit.
 function gameOverMessage() {
     const firstLine = 'You have won the game!<br>';
     let secondLine = '';
@@ -317,6 +329,10 @@ function gameOverMessage() {
     return firstLine+secondLine+thirdLine;
 }
 
+// Function that runs when all cards have been matched to end the game
+// Stops the timer and sends the player a message explaining their stats from
+// the last game, and resets the game when the player confirms having read
+// the message
 function gameOver() {
     stopTimer();
     swal.fire({
@@ -329,8 +345,6 @@ function gameOver() {
             resetGame
   )
 }
- /*    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
 
 // Overall function to run the game!
 function runGame() {
@@ -350,6 +364,9 @@ function runGame() {
      getClickedCards()
 }
 
+// Resets the game to the starting state, with no cards flipped over, the
+// the timer and move counter both set to 0, and the stars set to the full
+// 3-star rating
 function resetGame() {
     let deckContainer = document.getElementById("deck");
     while(deckContainer.firstChild) {
@@ -361,13 +378,17 @@ function resetGame() {
     runGame();
 }
 
+// Adds an event listener to the reset button so that the game will restart
+// if that button is clicked by a player
 function setupReset() {
     document.getElementById("restart").addEventListener("click", function() {
         resetGame();
     });
 }
 
-
+// function that provides the text block explaining the game to the player
+// output is passed to explainGame() so that it is easier to understand and
+// edit each separate function
 function gameInfo() {
     const gameInfoHTML = `Hello! The object of this game
                           is to match each pair of cards.
@@ -398,5 +419,5 @@ function setupGame() {
     runGame()
 }
 
-// explain and start the initial game when content is loaded
+// explain and start the initial game when content is first loaded on the page
 window.addEventListener('DOMContentLoaded', setupGame());
