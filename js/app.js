@@ -152,9 +152,6 @@ function checkCards(card) {
         else if(moveCount==26) {
             removeStar()
         }
-        else if(moveCount==31) {
-            removeStar()
-        }
 
         // run function to check if game is over and if so, display
         // game end message using another function

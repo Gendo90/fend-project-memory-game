@@ -25,10 +25,8 @@ The first card clicked of a potential pair remains visible until the second
 card of the potential pair is clicked, and then both cards remain visible if
 they are a match, and flip back over if they are not. Each potential pair that
 is tried constitutes one (1) move for the game's move counter. The more moves
-the player makes, the lower their star rating becomes. If the player tries to
-make a "free" move while the attempted pair is flipping over, the game will
-penalize them for trying to view an extra card and will count an entire move
-towards their total.
+the player makes, the lower their star rating becomes, down to a minimum of
+1-star.
 
 When all cards have been matched successfully, the game will send the player
 a congratulatory message showing their star rating and total game time. When
