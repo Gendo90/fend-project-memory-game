@@ -89,13 +89,25 @@ function getClickedCards() {
     document.getElementById("deck").addEventListener("click", showCard);
 }
 
+// Function to help pause the code for animations
+// function sleep(ms) {
+//   return new Promise(resolve => setTimeout(resolve, ms));
+// }
 
  // display the card's symbol
 function showCard(event) {
     if(event.target.classList.contains("card")) {
         thisCard = event.target
-        thisCard.classList.add("show", "open");
-        checkCards(thisCard);
+        if(!thisCard.classList.contains("match") && allOpenCards.length<=1) {
+            if(allOpenCards.length!==1) {
+                thisCard.style.animationPlayState = "running";
+                setTimeout(function() {
+                    thisCard.style.animationPlayState = "paused"},
+                    300)
+                thisCard.classList.add("show", "open");
+            }
+            checkCards(thisCard);
+        }
     }
 }
 
@@ -106,15 +118,18 @@ allOpenCards = [];
 let timerInterval = null;
 function checkCards(card) {
     // Prevents the case where a card matches with itself!
-    if(card!==allOpenCards[0]) {
+    if(card!==allOpenCards[0] && card.tagName==="LI") {
         allOpenCards.push(card);
     }
+    console.log(card);
+    console.log(allOpenCards)
 
-    if(allOpenCards.length===1 && getMoveCount()==0) {
+    if(allOpenCards.length===1 && getMoveCount()==0 && timerInterval===null) {
         timerInterval = startTimer();
     }
 
     if(allOpenCards.length>1) {
+        console.log(allOpenCards)
         if(allOpenCards[0].firstElementChild.classList.value === allOpenCards[1].firstElementChild.classList.value) {
 
             // run function to lock cards open, matched correctly!
@@ -152,8 +167,14 @@ function checkCards(card) {
 
 // Locks matched cards as visible after they have been matched correctly
 function setMatchedCards(matchedCards) {
-    matchedCards.pop().classList.add("match");
-    matchedCards.pop().classList.add("match");
+    matchedCards[0].style.animationPlayState = "paused";
+    // second card's animation need to run to turn it over!
+    matchedCards[1].style.animationPlayState = "running";
+    setTimeout(function() {
+        matchedCards[1].style.animationPlayState = "paused";
+        matchedCards.pop().classList.add("match");
+        matchedCards.pop().classList.add("match");
+    }, 300)
     return matchedCards;
 }
 
@@ -163,11 +184,18 @@ function revertMismatch(unmatchedCards) {
     // set card backgrounds to red to visually indicate they are not matches
     unmatchedCards[0].classList.add("mismatch")
     unmatchedCards[1].classList.add("mismatch")
-    // Add a delay to see both cards before flipping them back around
+
+    unmatchedCards[0].style.animationPlayState = "running";
+    unmatchedCards[1].style.animationPlayState = "running";
+    setTimeout(function() {
+        unmatchedCards[0].style.animationPlayState = "paused";
+        unmatchedCards[1].style.animationPlayState = "paused";
+    }, 600)
     setTimeout(function() {
         unmatchedCards.pop().classList.remove("show", "open", "mismatch");
         unmatchedCards.pop().classList.remove("show", "open", "mismatch");
-    }, 500);
+    }, 600)
+    // Add a delay to see both cards before flipping them back around
 
     return unmatchedCards;
 }
@@ -274,6 +302,7 @@ function incrementTimer() {
 // Stops the timer running on the current game (used when the game is over)
 function stopTimer() {
     clearInterval(timerInterval);
+    timerInterval = null;
 }
 
 // Resets the timer to 00:00 when a new game is started
