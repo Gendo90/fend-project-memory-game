@@ -121,15 +121,12 @@ function checkCards(card) {
     if(card!==allOpenCards[0] && card.tagName==="LI") {
         allOpenCards.push(card);
     }
-    console.log(card);
-    console.log(allOpenCards)
 
     if(allOpenCards.length===1 && getMoveCount()==0 && timerInterval===null) {
         timerInterval = startTimer();
     }
 
     if(allOpenCards.length>1) {
-        console.log(allOpenCards)
         if(allOpenCards[0].firstElementChild.classList.value === allOpenCards[1].firstElementChild.classList.value) {
 
             // run function to lock cards open, matched correctly!
@@ -142,7 +139,7 @@ function checkCards(card) {
         }
 
         // run function to increment move counter
-        let moveCount = incrementMoves()
+        let moveCount = incrementMoves();
 
         // remove star if the moves indicate that the
         // player should have a lower rating
@@ -150,14 +147,13 @@ function checkCards(card) {
             removeStar();
         }
         else if(moveCount==26) {
-            removeStar()
+            removeStar();
         }
 
-        // run function to check if game is over and if so, display
-        // game end message using another function
-        if(isGameOver()) {
-            gameOver()
-        }
+        // run function to check if game is over and if so, stop game and
+        // display game end message using another function
+        // Note - needs to wait 300ms for final animation to end!
+        setTimeout(checkAndSetGameOver, 300);
 
     }
 }
@@ -370,6 +366,13 @@ function gameOver() {
     }).then(
             resetGame
   )
+}
+
+function checkAndSetGameOver() {
+    if(isGameOver()) {
+        console.log("The game is over! You won!");
+        gameOver();
+    }
 }
 
 // Overall function to run the game!
