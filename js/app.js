@@ -3,7 +3,7 @@
  */
 function createDeck() {
      // Initialize the deck
-     cardList = new Array();
+     cardList = [];
 
      // Create and add all <li> "cards" to the deck, 16 in total
      for (let i=0; i<16; i++) {
@@ -61,7 +61,7 @@ function createDeck() {
          cardList[7+shifter].appendChild(icon);
      }
 
-     return cardList
+     return cardList;
  }
 
 
@@ -97,13 +97,13 @@ function getClickedCards() {
  // display the card's symbol
 function showCard(event) {
     if(event.target.classList.contains("card")) {
-        thisCard = event.target
+        thisCard = event.target;
         if(!thisCard.classList.contains("match") && allOpenCards.length<=1) {
             if(allOpenCards.length!==1) {
                 thisCard.style.animationPlayState = "running";
                 setTimeout(function() {
-                    thisCard.style.animationPlayState = "paused"},
-                    300)
+                    thisCard.style.animationPlayState = "paused";
+                }, 300);
                 thisCard.classList.add("show", "open");
             }
             checkCards(thisCard);
@@ -118,7 +118,7 @@ allOpenCards = [];
 let timerInterval = null;
 function checkCards(card) {
     // Prevents the case where a card matches with itself!
-    if(card!==allOpenCards[0] && card.tagName==="LI") {
+    if(card!==allOpenCards[0]) {
         allOpenCards.push(card);
     }
 
@@ -161,13 +161,14 @@ function checkCards(card) {
 // Locks matched cards as visible after they have been matched correctly
 function setMatchedCards(matchedCards) {
     matchedCards[0].style.animationPlayState = "paused";
-    // second card's animation need to run to turn it over!
+    // second card's animation needs to run to turn it over!
     matchedCards[1].style.animationPlayState = "running";
+    // delay in execution due to animation duration
     setTimeout(function() {
         matchedCards[1].style.animationPlayState = "paused";
         matchedCards.pop().classList.add("match");
         matchedCards.pop().classList.add("match");
-    }, 300)
+    }, 300);
     return matchedCards;
 }
 
@@ -175,19 +176,19 @@ function setMatchedCards(matchedCards) {
 // hidden again
 function revertMismatch(unmatchedCards) {
     // set card backgrounds to red to visually indicate they are not matches
-    unmatchedCards[0].classList.add("mismatch")
-    unmatchedCards[1].classList.add("mismatch")
+    unmatchedCards[0].classList.add("mismatch");
+    unmatchedCards[1].classList.add("mismatch");
 
     unmatchedCards[0].style.animationPlayState = "running";
     unmatchedCards[1].style.animationPlayState = "running";
     setTimeout(function() {
         unmatchedCards[0].style.animationPlayState = "paused";
         unmatchedCards[1].style.animationPlayState = "paused";
-    }, 600)
+    }, 600);
     setTimeout(function() {
         unmatchedCards.pop().classList.remove("show", "open", "mismatch");
         unmatchedCards.pop().classList.remove("show", "open", "mismatch");
-    }, 600)
+    }, 600);
     // Add a delay to see both cards before flipping them back around
 
     return unmatchedCards;
@@ -212,7 +213,7 @@ function incrementMoves() {
 // Resets the move counter to 0
 function resetMoveCounter() {
     let moveCounter = document.querySelector(".moves");
-    moveCounter.textContent = "0"
+    moveCounter.textContent = "0";
 }
 
 // Removes one star from the player's rating
@@ -258,7 +259,7 @@ function startTimer() {
 function getTimerValue() {
     let minutes = document.querySelector("#minutes").textContent;
     let seconds = document.querySelector("#seconds").textContent;
-    return [Number(minutes), Number(seconds)]
+    return [Number(minutes), Number(seconds)];
 }
 
 // Increases the timer by one second at a time, with special cases for
@@ -288,7 +289,7 @@ function incrementTimer() {
     }
     else {
         // reset the game if it takes an hour!
-        setupReset()
+        setupReset();
     }
 }
 
@@ -332,11 +333,11 @@ function gameOverMessage() {
     if(endTime[0]) {
         secondLine = 'Your time was ' + endTime[0] +
                             ' minutes and ' + endTime[1] +
-                            ' seconds!<br>'
+                            ' seconds!<br>';
     }
     else {
         secondLine = 'Your time was ' + endTime[1] +
-                            ' seconds!<br>'
+                            ' seconds!<br>';
     }
 
     for(i=0; i<getStars(); i++) {
@@ -345,8 +346,9 @@ function gameOverMessage() {
     if(starText) {
         thirdLine = 'Your star rating was ' + starText;
     }
+    // Now dead code, since there is a new one-star minimum
     else {
-        thirdLine = 'Sorry, you got no stars. Keep trying!'
+        thirdLine = 'Sorry, you got no stars. Keep trying!';
     }
     return firstLine+secondLine+thirdLine;
 }
@@ -390,7 +392,7 @@ function runGame() {
      }
 
      // run the function below when app is ready!
-     getClickedCards()
+     getClickedCards();
 }
 
 // Resets the game to the starting state, with no cards flipped over, the
@@ -426,7 +428,7 @@ function gameInfo() {
                           the cards will remain visible if they are a
                           match. The cards will quickly become hidden again
                           if they are not a match. The game is over when
-                          all cards have been matched. Have fun!`
+                          all cards have been matched. Have fun!`;
     return gameInfoHTML;
 }
 
@@ -443,9 +445,9 @@ function explainGame() {
 
 // function to explain and start the initial game
 function setupGame() {
-    explainGame()
-    setupReset()
-    runGame()
+    explainGame();
+    setupReset();
+    runGame();
 }
 
 // explain and start the initial game when content is first loaded on the page
