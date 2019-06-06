@@ -159,3 +159,53 @@ h1 {
     float: right;
     cursor: pointer;
 }
+
+@media screen and (max-width: 660px) {
+    .deck {
+        width: 90%;
+        height: 90vw;
+        min-height: 420px;
+    }
+
+    .deck .card {
+        padding: 10px;
+        max-width: 125px;
+        min-width: 20px;
+        width: 18vw;
+        max-height: 125px;
+        min-height: 20px;
+        height: 18vw;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .deck {
+        width: 90%;
+        height: 90vw;
+        min-height: 550px;
+    }
+
+    .deck .card {
+        margin-right: 5px;
+        margin-bottom: 5px;
+        max-width: 125px;
+        min-width: 20px;
+        width: 18vw;
+        max-height: 125px;
+        min-height: 20px;
+        height: 18vw;
+    }
+
+    .score-panel {
+        margin-left: 25px;
+    }
+
+    .timer {
+        margin-left: 10px;
+    }
+
+    .score-panel .restart {
+        float: right;
+        margin-right: 50px;
+    }
+}
